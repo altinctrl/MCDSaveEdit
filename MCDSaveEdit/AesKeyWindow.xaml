@@ -1,0 +1,39 @@
+﻿<Window x:Class="MCDSaveEdit.AesKeyWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MCDSaveEdit"
+        mc:Ignorable="d"
+        Title="Decryption key"
+        WindowStyle="ToolWindow"
+        ResizeMode="NoResize"
+        SizeToContent="Height"
+        Width="600">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock x:Name="messageTextBlock" Margin="15,5" Grid.Row="0" TextWrapping="Wrap">
+            MCDSaveEdit is having issues decrypting the game files. Can you provide another one?
+            <LineBreak/>
+            If you skip no game content will be shown throughout the interface.
+        </TextBlock>
+        <GroupBox x:Name="keyGroupBox" Header="Key (Optional)" Margin="5" Grid.Row="1">
+            <TextBox x:Name="keyTextBox" Text="" Width="Auto" Margin="5"/>
+        </GroupBox>
+        <Grid Margin="5" Height="32" Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Button x:Name="changeFilesButton" Content="Change game files path" Grid.Column="0" Margin="5" Padding="5,0" Click="changeFilesPathButton_Click"/>
+            <Button x:Name="tryAgainButton" Content="Try Again" Grid.Column="2" Margin="5" Padding="5,0" Click="tryAgainButton_Click"/>
+            <Button x:Name="skipButton" Content="Skip" Grid.Column="3" Margin="5" Padding="5,0" IsDefault="True" Click="skipButton_Click"/>
+        </Grid>
+    </Grid>
+</Window>

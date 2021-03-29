@@ -19,6 +19,7 @@ namespace MCDSaveEdit
         private Window? _busyWindow = null;
         private bool _askForGameContentLocation = false;
         private bool _skipGameContent = false;
+        private string? paksFolderPath;
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -56,7 +57,7 @@ namespace MCDSaveEdit
         private void load()
         {
             //check default install locations
-            string? paksFolderPath = ImageUriHelper.usableGameContentIfExists();
+            paksFolderPath = ImageUriHelper.usableGameContentIfExists();
             if (_askForGameContentLocation || string.IsNullOrWhiteSpace(paksFolderPath))
             {
                 //show dialog asking for install location
@@ -96,16 +97,42 @@ namespace MCDSaveEdit
 
         private async void loadGameContentAsync(string paksFolderPath)
         {
-            showBusyIndicator();
+            //showBusyIndicator();
             try
             {
                 await ImageUriHelper.loadGameContentAsync(paksFolderPath);
             }
             catch (Exception e)
             {
-                MessageBox.Show($"{e.Message}\n{e.StackTrace}", R.ERROR);
-                this.Shutdown();
-                return;
+                if (e.Message.StartsWith("Could not decrypt pak files at"))
+                {
+                    var aesKeyWindow = new AesKeyWindow();
+                    aesKeyWindow.Owner = this.MainWindow;
+                    aesKeyWindow.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                    aesKeyWindow.ShowDialog();
+                    var aesKeyWindowResult = aesKeyWindow.result;
+                    switch (aesKeyWindowResult)
+                    {
+                        case AesKeyWindow.AesKeyWindowResult.changeFilesPath:
+                            load();
+                            break;
+                        case AesKeyWindow.AesKeyWindowResult.tryAgain:
+                            if (!string.IsNullOrWhiteSpace(paksFolderPath))
+                            {
+                                loadGameContentAsync(paksFolderPath);
+                            }
+                            break;
+                        case AesKeyWindow.AesKeyWindowResult.skip:
+                            showMainWindow();
+                            break;
+                    }
+                    
+                } else
+                {
+                    MessageBox.Show($"{e.Message}\n{e.StackTrace}", R.ERROR);
+                    this.Shutdown();
+                    return;
+                }
             }
             await preloadImages();
             showMainWindow();
