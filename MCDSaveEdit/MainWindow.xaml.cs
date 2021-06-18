@@ -52,7 +52,7 @@ namespace MCDSaveEdit
             translateStaticStrings();
 
             _mainModel.showError = showError;
-            gameFilesLocationMenuItem.Header = AppModel.instance.path;
+            gameFilesLocationMenuItem.Header = AppModel.instance.path ?? R.GAME_FILES_WINDOW_NO_CONTENT_BUTTON;
 
             refreshRecentFilesList();
             if (AppModel.gameContentLoaded)
@@ -121,7 +121,7 @@ namespace MCDSaveEdit
         private void fillStatsStack()
         {
             statsStack.Children.Clear();
-            if (_model == null || _model?.profile.value == null) { return; }
+            if (_model?.profile.value?.ProgressStatCounters == null) { return; }
 
             foreach (var pair in _model!.profile.value!.ProgressStatCounters)
             {
@@ -133,7 +133,7 @@ namespace MCDSaveEdit
         private void fillMobKillsStack()
         {
             mobKillsStack.Children.Clear();
-            if (_model?.profile.value == null) { return; }
+            if (_model?.profile.value?.MobKills == null) { return; }
 
             foreach (var pair in _model!.profile.value!.MobKills)
             {
@@ -247,6 +247,8 @@ namespace MCDSaveEdit
 
             selectedItemScreen.selectEnchantment = new RelayCommand<Enchantment>(model.selectEnchantment);
             selectedItemScreen.saveChanges = new RelayCommand<Item>(model.saveItem);
+            selectedItemScreen.duplicateItem = new RelayCommand<Item>(duplicateItem);
+            selectedItemScreen.deleteItem = new RelayCommand<Item>(removeItem);
             selectedItemScreen.addEnchantmentSlot = new RelayCommand<object>(model.addEnchantmentSlot);
             selectedEnchantmentScreen.close = new RelayCommand<Enchantment>(model.selectEnchantment);
             selectedEnchantmentScreen.saveChanges = new RelayCommand<Enchantment>(model.saveEnchantment);
@@ -259,6 +261,20 @@ namespace MCDSaveEdit
             model.profile.subscribe(_ => this.updateUI());
             model.equippedItemList.subscribe(_ => this.updateEnchantmentPointsUI());
             model.filteredItemList.subscribe(_ => this.updateEnchantmentPointsUI());
+        }
+
+        private void duplicateItem(Item item)
+        {
+            model?.selectEnchantment(null);
+            model?.addItemToInventory(item);
+            model?.selectItem(item);
+        }
+
+        private void removeItem(Item item)
+        {
+            model?.selectEnchantment(null);
+            model?.selectItem(null);
+            model?.removeItem(item);
         }
 
         #region Version Check
@@ -341,8 +357,7 @@ namespace MCDSaveEdit
         private void aboutMenuItem_Click(object sender, RoutedEventArgs e)
         {
             EventLogger.logEvent("aboutMenuItem_Click");
-            var aboutWindow = new AboutWindow();
-            aboutWindow.Owner = this;
+            var aboutWindow = WindowFactory.createAboutWindow();
             aboutWindow.ShowDialog();
         }
 
@@ -447,14 +462,8 @@ namespace MCDSaveEdit
         {
             closeBusyIndicator();
 
-            _busyWindow = new Window();
+            _busyWindow = WindowFactory.createBusyWindow();
             _busyWindow.Owner = this;
-            _busyWindow.Height = 200;
-            _busyWindow.Width = 200;
-            _busyWindow.ResizeMode = ResizeMode.NoResize;
-            _busyWindow.WindowStyle = WindowStyle.None;
-            _busyWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-            _busyWindow.Content = new BusyIndicator();
             _busyWindow.Show();
         }
 

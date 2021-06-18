@@ -7,6 +7,10 @@ namespace MCDSaveEdit.Save.Models.Profiles
 {
     public static class ProfileExtensions
     {
+        public static bool isValid(this ProfileSaveFile profile)
+        {
+            return profile.Items != null;
+        }
         public static Item meleeGearItem(this ProfileSaveFile profile)
         {
             return profile.equipmentSlot(EquipmentSlotEnum.MeleeGear);
@@ -46,6 +50,18 @@ namespace MCDSaveEdit.Save.Models.Profiles
         public static int level(this ProfileSaveFile profile)
         {
             return GameCalculator.levelForExperience(profile.Xp);
+        }
+        public static int computeCharacterPower(this ProfileSaveFile profile)
+        {
+            var melee = profile.meleeGearItem()?.Power ?? 0;
+            var armor = profile.armorGearItem()?.Power ?? 0;
+            var ranged = profile.rangedGearItem()?.Power ?? 0;
+            var slot1 = profile.hotbarSlot1Item()?.Power ?? 0;
+            var slot2 = profile.hotbarSlot2Item()?.Power ?? 0;
+            var slot3 = profile.hotbarSlot3Item()?.Power ?? 0;
+            var characterPower = GameCalculator.characterPowerFromEquippedItemPowers(melee, armor, ranged, slot1, slot2, slot3);
+            var chacarterDisplayPower = GameCalculator.levelFromPower(characterPower);
+            return chacarterDisplayPower;
         }
         public static int remainingEnchantmentPoints(this ProfileSaveFile profile)
         {

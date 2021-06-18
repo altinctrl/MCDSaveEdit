@@ -37,6 +37,9 @@ namespace MCDSaveEdit
             upgradedButtonCheckBox.Content = R.getString("item_diamond_dust_upgraded") ?? R.UPGRADED;
             giftedButtonCheckBox.Content = R.getString("item_gifted") ?? R.GIFTED;
 
+            duplicateItemButton.Content = R.DUPLICATE;
+            deleteItemButton.Content = R.DELETE;
+
             updateUI();
         }
 
@@ -90,6 +93,8 @@ namespace MCDSaveEdit
                 upgradedButtonCheckBox.IsChecked = false;
                 giftedButton.IsEnabled = false;
                 giftedButtonCheckBox.IsChecked = false;
+                duplicateItemButton.IsEnabled = false;
+                deleteItemButton.IsEnabled = false;
             }
             else
             {
@@ -99,6 +104,8 @@ namespace MCDSaveEdit
                 upgradedButton.IsEnabled = true;
                 giftedButtonCheckBox.IsChecked = _item.Gifted == true;
                 giftedButton.IsEnabled = true;
+                duplicateItemButton.IsEnabled = true;
+                deleteItemButton.IsEnabled = true;
             }
         }
 
@@ -226,8 +233,7 @@ namespace MCDSaveEdit
         {
             if (!AppModel.gameContentLoaded) { return; }
             EventLogger.logEvent("armorPropertyButton_Click", new Dictionary<string, object>() { { "armorProperty", armorProperty.Id } });
-            var selectionWindow = new SelectionWindow();
-            selectionWindow.Owner = Application.Current.MainWindow;
+            var selectionWindow = WindowFactory.createSelectionWindow();
             selectionWindow.loadArmorProperties(armorProperty.Id);
             selectionWindow.onSelection = newArmorPropertyId => {
                 this.replaceArmorProperty(armorProperty.Id, newArmorPropertyId);
@@ -330,6 +336,8 @@ namespace MCDSaveEdit
             throw new NotImplementedException();
         }
 
+        public ICommand? duplicateItem { get; set; }
+        public ICommand? deleteItem { get; set; }
         public ICommand? saveChanges { get; set; }
         public ICommand? selectEnchantment { get; set; }
         public ICommand? addEnchantmentSlot { get; set; }
@@ -410,8 +418,7 @@ namespace MCDSaveEdit
             if(_item == null) { return; }
             if (!AppModel.gameContentLoaded) { return; }
             EventLogger.logEvent("inventoryItemButton_Click", new Dictionary<string, object>() { { "item", _item!.Type } });
-            var selectionWindow = new SelectionWindow();
-            selectionWindow.Owner = Application.Current.MainWindow;
+            var selectionWindow = WindowFactory.createSelectionWindow();
             var filter = getFilter(_item);
             if(filter != ItemFilterEnum.All)
             {
@@ -423,6 +430,20 @@ namespace MCDSaveEdit
             }
             selectionWindow.onSelection = selectedItemType;
             selectionWindow.Show();
+        }
+
+        private void duplicateItemButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_item == null) { return; }
+            EventLogger.logEvent("duplicateItemButton_Click", new Dictionary<string, object>() { { "item", _item!.Type } });
+            this.duplicateItem?.Execute(_item.Copy());
+        }
+
+        private void deleteItemButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_item == null) { return; }
+            EventLogger.logEvent("deleteItemButton_Click", new Dictionary<string, object>() { { "item", _item!.Type } });
+            this.deleteItem?.Execute(_item);
         }
 
         private ItemFilterEnum getFilter(Item? item)

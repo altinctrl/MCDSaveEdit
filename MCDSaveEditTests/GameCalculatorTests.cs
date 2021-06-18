@@ -75,14 +75,14 @@ namespace MCDSaveEditTests
             foreach (var pair in data)
             {
                 Assert.AreEqual(pair.Item2, GameCalculator.levelFromPower(pair.Item1));
-                //Assert.AreEqual(pair.Item1, GameCalculator.powerFromLevel(pair.Item2));
+                Assert.AreEqual(pair.Item1, GameCalculator.powerFromLevel(pair.Item2), 0.1);
             }
         }
 
         [TestMethod]
         public void TestLevelToPowerToLevel()
         {
-            for(int i=1; i<1_000_000; i++)
+            for(int i=0; i<1_000_000; i++)
             {
                 var power = GameCalculator.powerFromLevel(i);
                 var level = GameCalculator.levelFromPower(power);
@@ -120,6 +120,36 @@ namespace MCDSaveEditTests
             Assert.AreEqual(44, GameCalculator.powerfulEnchantmentCostForLevel(8));
             Assert.AreEqual(54, GameCalculator.powerfulEnchantmentCostForLevel(9));
             Assert.AreEqual(65, GameCalculator.powerfulEnchantmentCostForLevel(10));
+        }
+
+        [TestMethod]
+        public void TestCharacterPowerWhereAllEqual()
+        {
+            var data = new[] {
+                0,
+                1, 2, 3, 4, 5, 6, 7, 8, 9,
+                10, 20, 30, 40, 50, 60, 70, 80, 90,
+                100, 200, 300, 400, 500, 600, 700, 800, 900,
+                1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000,
+                10000, 20000, 30000, 40000, 50000, 60000, 70000, 80000, 90000,
+            };
+            foreach (var value in data)
+            {
+                Assert.AreEqual(value, GameCalculator.characterPowerFromEquippedItemPowers(value, value, value, value, value, value));
+            }
+        }
+
+        [TestMethod]
+        public void TestCharacterPowerWithSpecificValues()
+        {
+            Assert.AreEqual(69, GameCalculator.characterPowerFromEquippedItemPowers(0, 27, 36, 420, 120, 100), 0.5);
+            Assert.AreEqual(86, GameCalculator.characterPowerFromEquippedItemPowers(100, 27, 36, 420, 120, 0), 0.5);
+            Assert.AreEqual(73, GameCalculator.characterPowerFromEquippedItemPowers(16, 27, 36, 420, 120, 100), 0.5);
+            Assert.AreEqual(25, GameCalculator.characterPowerFromEquippedItemPowers(100, 0, 0, 0, 0, 0), 0.5);
+            Assert.AreEqual(8, GameCalculator.characterPowerFromEquippedItemPowers(0, 0, 0, 0, 0, 100), 0.5);
+            Assert.AreEqual(0, GameCalculator.characterPowerFromEquippedItemPowers(0, 0, 0, 0, 0, 0), 0.5);
+            Assert.AreEqual(1, GameCalculator.levelFromPower(GameCalculator.characterPowerFromEquippedItemPowers(GameCalculator.powerFromLevel(1), 0, GameCalculator.powerFromLevel(1), 0, 0, 0)), 0.5);
+            Assert.AreEqual(1, GameCalculator.levelFromPower(GameCalculator.characterPowerFromEquippedItemPowers(0, 0, 0, GameCalculator.powerFromLevel(1), 0, 0)), 0.5);
         }
     }
 }

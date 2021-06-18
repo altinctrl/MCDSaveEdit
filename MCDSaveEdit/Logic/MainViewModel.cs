@@ -27,8 +27,8 @@ namespace MCDSaveEdit
             // Reload items from the registry.
             for (int i = 0; i < Constants.MAX_RECENT_FILES; i++)
             {
-                string file_name = (string)RegistryTools.GetSetting(Constants.APPLICATION_NAME, "FilePath" + i.ToString(), "");
-                if (file_name != "")
+                string file_name = (string)RegistryTools.GetSetting(Constants.APPLICATION_NAME, "FilePath" + i.ToString(), string.Empty);
+                if (!string.IsNullOrWhiteSpace(file_name))
                 {
                     _recentFilesInfos.Add(new FileInfo(file_name));
                 }
@@ -140,6 +140,11 @@ namespace MCDSaveEdit
             {
                 stream.Seek(0, SeekOrigin.Begin);
                 var profile = await ProfileParser.Read(stream);
+                if(!profile.isValid())
+                {
+                    showError?.Invoke(R.CHARACTER_FILE_FORMAT_NOT_RECOGNIZED_ERROR_MESSAGE);
+                    return null;
+                }
                 return profile;
             }
             catch (Exception e)
@@ -157,6 +162,7 @@ namespace MCDSaveEdit
         public async Task handleFileSaveAsync(string? filePath, ProfileSaveFile profile)
         {
             if (filePath == null) { return; }
+            profile.TotalGearPower = profile.computeCharacterPower();
             Console.WriteLine("Writing file: {0}", filePath!);
             if (Path.GetExtension(filePath!) == Constants.DECRYPTED_FILE_EXTENSION)
             {

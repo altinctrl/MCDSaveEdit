@@ -145,6 +145,10 @@
     <value>Cancel</value>
     <comment>Cancel</comment>
   </data>
+  <data name="CHARACTER_FILE_FORMAT_NOT_RECOGNIZED_ERROR_MESSAGE" xml:space="preserve">
+    <value>Character File format not recognized. Please select a valid Character File.</value>
+    <comment>Character File format not recognized. Please select a valid Character File.</comment>
+  </data>
   <data name="COMMON" xml:space="preserve">
     <value>Common</value>
     <comment>Common</comment>
@@ -168,6 +172,14 @@
   <data name="DECRYPTED_CHARACTER_SAVE_FILES" xml:space="preserve">
     <value>Decrypted Character Save files</value>
     <comment>Decrypted Character Save files</comment>
+  </data>
+  <data name="DELETE" xml:space="preserve">
+    <value>Delete</value>
+    <comment>Delete</comment>
+  </data>
+  <data name="DUPLICATE" xml:space="preserve">
+    <value>Duplicate</value>
+    <comment>Duplicate</comment>
   </data>
   <data name="EMERALDS" xml:space="preserve">
     <value>Emeralds</value>
@@ -261,6 +273,10 @@
     <value>Jungle Awakens</value>
     <comment>Jungle Awakens</comment>
   </data>
+  <data name="LAUNCH_WITH_LIMITED_FEATURES_QUESTION" xml:space="preserve">
+    <value>Launch with no game content and limited features?</value>
+    <comment>Launch with no game content and limited features?</comment>
+  </data>
   <data name="LEVEL" xml:space="preserve">
     <value>Level</value>
     <comment>Level</comment>
@@ -308,6 +324,14 @@
   <data name="OK" xml:space="preserve">
     <value>OK</value>
     <comment>OK</comment>
+  </data>
+  <data name="PLEASE_HAVE_LATEST_VERSION" xml:space="preserve">
+    <value>Please make sure you have the latest version.</value>
+    <comment>Please make sure you have the latest version.</comment>
+  </data>
+  <data name="POWER" xml:space="preserve">
+    <value>Power</value>
+    <comment>Power</comment>
   </data>
   <data name="POWERFUL" xml:space="preserve">
     <value>Powerful</value>

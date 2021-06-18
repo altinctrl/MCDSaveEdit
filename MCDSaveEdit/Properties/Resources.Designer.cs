@@ -124,6 +124,15 @@ namespace MCDSaveEdit.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Character File format not recognized. Please select a valid Character File..
+        /// </summary>
+        public static string CHARACTER_FILE_FORMAT_NOT_RECOGNIZED_ERROR_MESSAGE {
+            get {
+                return ResourceManager.GetString("CHARACTER_FILE_FORMAT_NOT_RECOGNIZED_ERROR_MESSAGE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Common.
         /// </summary>
         public static string COMMON {
@@ -174,6 +183,24 @@ namespace MCDSaveEdit.Properties {
         public static string DECRYPTED_CHARACTER_SAVE_FILES {
             get {
                 return ResourceManager.GetString("DECRYPTED_CHARACTER_SAVE_FILES", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        public static string DELETE {
+            get {
+                return ResourceManager.GetString("DELETE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplicate.
+        /// </summary>
+        public static string DUPLICATE {
+            get {
+                return ResourceManager.GetString("DUPLICATE", resourceCulture);
             }
         }
         
@@ -385,6 +412,15 @@ namespace MCDSaveEdit.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Launch with no game content and limited features?.
+        /// </summary>
+        public static string LAUNCH_WITH_LIMITED_FEATURES_QUESTION {
+            get {
+                return ResourceManager.GetString("LAUNCH_WITH_LIMITED_FEATURES_QUESTION", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Level.
         /// </summary>
         public static string LEVEL {
@@ -489,6 +525,24 @@ namespace MCDSaveEdit.Properties {
         public static string OK {
             get {
                 return ResourceManager.GetString("OK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please make sure you have the latest version..
+        /// </summary>
+        public static string PLEASE_HAVE_LATEST_VERSION {
+            get {
+                return ResourceManager.GetString("PLEASE_HAVE_LATEST_VERSION", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Power.
+        /// </summary>
+        public static string POWER {
+            get {
+                return ResourceManager.GetString("POWER", resourceCulture);
             }
         }
         
